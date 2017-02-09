@@ -12,7 +12,13 @@ logger = logging.getLogger(__name__)
 class Devopsy(Lego):
 
     def listening_for(self, message):
-        return message['text'].split()[0] == '!devopsy'
+        if message['text'] is not None:
+            try:
+                return message['text'].split()[0] == '!devopsy'
+            except Exception as e:
+                logger.error('Devopsy lego failed to check message text: %s'
+                             % e)
+                return False
 
     def handle(self, message):
         logger.info(message)
